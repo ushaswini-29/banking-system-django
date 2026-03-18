@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 50%;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .balance {
+            font-size: 22px;
+            text-align: center;
+            margin: 20px 0;
+            color: green;
+        }
+
+        form {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        input {
+            padding: 8px;
+            width: 60%;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .transactions {
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logout {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logout button {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏦 Bank Dashboard</h1>
+
+    <div class="balance">
+        Balance: ₹{{ balance }}
+    </div>
+
+    <!-- Deposit -->
+    <form method="POST" action="/deposit/">
+        {% csrf_token %}
+        <input type="number" name="amount" placeholder="Enter deposit amount" required>
+        <button type="submit">Deposit</button>
+    </form>
+
+    <!-- Withdraw -->
+    <form method="POST" action="/withdraw/">
+        {% csrf_token %}
+        <input type="number" name="amount" placeholder="Enter withdraw amount" required>
+        <button type="submit">Withdraw</button>
+    </form>
+
+    <!-- Transactions -->
+    <div class="transactions">
+        <h3>Transaction History</h3>
+        <ul>
+            {% for t in transactions %}
+                <li>{{ t.transaction_type }} - ₹{{ t.amount }}</li>
+            {% empty %}
+                <li>No transactions yet</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Logout -->
+    <div class="logout">
+        <form method="POST" action="/logout/">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
